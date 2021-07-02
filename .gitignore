@@ -1,0 +1,22 @@
+# Ignore all dotfiles...
+.*
+# except for .gitignore
+!.gitignore
+!.gitattributes
+
+*.iml
+*.ipr
+*.iws
+*.pyc
+*.tar.gz
+*.class
+*.db
+**/build
+
+**/.metadata
+**/.classpath
+**/.project
+**/.settings
+**/tmp/
+
+
