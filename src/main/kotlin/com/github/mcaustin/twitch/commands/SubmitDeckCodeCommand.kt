@@ -3,17 +3,16 @@ package com.github.mcaustin.twitch.commands
 import com.gikk.twirk.Twirk
 import com.gikk.twirk.types.twitchMessage.TwitchMessage
 import com.gikk.twirk.types.users.TwitchUser
-import com.github.mcaustin.deck.analysis.DeckAnalyzer
-import com.github.mcaustin.deck.DeckCodeBuilder
-import com.github.mcaustin.deck.analysis.OddEvenAnalysis
 import com.github.mcaustin.db.ViewerDeckRequest
 import com.github.mcaustin.db.ViewerDeckRequestLocalDbDAO
-import com.github.mcaustin.deck.analysis.CoreSetDuplicateAnalysis
+import com.github.mcaustin.deck.DeckCodeBuilder
+import com.github.mcaustin.deck.analysis.HighlanderAnalysis
+import com.github.mcaustin.deck.analysis.DeckAnalyzer
+import com.github.mcaustin.deck.analysis.MissingSecretsAnalysis
 import com.github.mcaustin.deck.analysis.NetDeckAnalysis
+import com.github.mcaustin.deck.analysis.OddEvenAnalysis
 import com.github.mcaustin.twitch.KeithNumbersConstants
-import com.github.mcaustin.twitch.TwitchBot
 import org.apache.logging.log4j.LogManager
-import java.lang.RuntimeException
 
 class SubmitDeckCodeCommand(
     private val deckCodeBuilder: DeckCodeBuilder,
@@ -25,7 +24,8 @@ class SubmitDeckCodeCommand(
     private val deckAnalyzers: List<DeckAnalyzer> = listOf(
         OddEvenAnalysis(),
         NetDeckAnalysis(twirk),
-        CoreSetDuplicateAnalysis()
+        HighlanderAnalysis(deckCodeBuilder.cardDictionary),
+        MissingSecretsAnalysis()
     )
 
     override fun executeCommand(sender: TwitchUser?, message: TwitchMessage?) {

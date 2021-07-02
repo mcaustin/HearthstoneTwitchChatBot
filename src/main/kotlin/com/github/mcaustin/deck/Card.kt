@@ -16,6 +16,9 @@ data class Card(
     val attack: Int? = null,
     val cost: Int? = null,
     val faction: String? = "UNKNOWN",
-    val artist: String? = "UNKNOWN"
+    val artist: String? = "UNKNOWN",
+    val mechanics: List<String>? = null,
+    val referencedTags: List<String>? = null,
+    val text: String? = ""
 )
 

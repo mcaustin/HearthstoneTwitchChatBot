@@ -7,8 +7,8 @@ import com.github.mcaustin.deck.Deck
 class OddEvenAnalysis: DeckAnalyzer {
 
     override fun analyze(deck: Deck): String? {
-        if (oddCardCheck(deck)) return "Warning! Even cards found in a Baku Deck"
-        if (evenCardCheck(deck)) return "Warning! Odd cards found in a Genn Deck"
+        if (oddCardCheck(deck)) return "***Warning*** Even cards found in a Baku Deck"
+        if (evenCardCheck(deck)) return "***Warning*** Odd cards found in a Genn Deck"
 
         return null
     }

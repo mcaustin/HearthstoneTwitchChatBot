@@ -8,7 +8,7 @@ class DeckCodeBuilder {
 
     private val logger = LogManager.getLogger(DeckCodeBuilder::class.java)
 
-    private val cardDictionary = CardDictionary(getCardJsonData())
+    val cardDictionary = CardDictionary(getCardJsonData())
 
     /**
      * Creates a file based on the given path to the resource folder.
