@@ -1,7 +1,6 @@
 package com.github.mcaustin.deck.analysis
 
 import com.gikk.twirk.Twirk
-import com.github.mcaustin.deck.CardDictionary
 import com.github.mcaustin.deck.Deck
 import org.apache.commons.text.StringEscapeUtils
 import org.apache.logging.log4j.LogManager
