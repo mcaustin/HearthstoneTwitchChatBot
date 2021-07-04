@@ -41,8 +41,16 @@ class Deck(
     }
 
     fun description(): String {
+        val cardCount = cards.sumOf { it.second }
+
+        val computedFormat = if (cardCount == 15) {
+            "DUELS"
+        } else {
+            format
+        }
+
         val description =
-            StringBuilder("$format $heroClass")
+            StringBuilder("$computedFormat $heroClass")
 
         val displayTags = tags
         if (displayTags.isNotEmpty()) {

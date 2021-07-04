@@ -8,7 +8,7 @@ import com.github.mcaustin.deck.Mechanics.SECRET
  */
 class MissingSecretsAnalysis : DeckAnalyzer {
 
-    override fun analyze(deck: Deck): String? {
+    override fun analyze(deck: Deck): AnalysisResult? {
 
         //Anti-secret tech
         val interactsWithEnemySecretCards = deck.cards.map { it.first }.filter { it.referencedTags?.contains(SECRET) ?: false }
@@ -26,8 +26,8 @@ class MissingSecretsAnalysis : DeckAnalyzer {
             val secretCards = deck.cards.map { it.first }.filter { it.mechanics?.contains(SECRET) ?: false }
 
             if (secretCards.isEmpty()) {
-                return "***Warning*** Found ${secretSynergyCards.size} cards that use secrets" +
-                    " (${secretSynergyCards.first().name}), but deck contains NO secrets."
+                return AnalysisResult("***Warning*** Found ${secretSynergyCards.size} cards that use secrets" +
+                    " (${secretSynergyCards.first().name}), but deck contains NO secrets.", true)
             }
         }
         return null

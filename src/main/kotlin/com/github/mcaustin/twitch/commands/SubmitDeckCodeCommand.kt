@@ -9,8 +9,10 @@ import com.github.mcaustin.deck.DeckCodeBuilder
 import com.github.mcaustin.deck.analysis.HighlanderAnalysis
 import com.github.mcaustin.deck.analysis.DeckAnalyzer
 import com.github.mcaustin.deck.analysis.MissingSecretsAnalysis
+import com.github.mcaustin.deck.analysis.NZothAnalysis
 import com.github.mcaustin.deck.analysis.NetDeckAnalysis
 import com.github.mcaustin.deck.analysis.OddEvenAnalysis
+import com.github.mcaustin.deck.analysis.UniqueCardCostAnalysis
 import com.github.mcaustin.twitch.KeithNumbersConstants
 import org.apache.logging.log4j.LogManager
 
@@ -25,7 +27,9 @@ class SubmitDeckCodeCommand(
         OddEvenAnalysis(),
         NetDeckAnalysis(twirk),
         HighlanderAnalysis(deckCodeBuilder.cardDictionary),
-        MissingSecretsAnalysis()
+        MissingSecretsAnalysis(),
+        NZothAnalysis(),
+        UniqueCardCostAnalysis()
     )
 
     override fun executeCommand(sender: TwitchUser?, message: TwitchMessage?) {
@@ -88,7 +92,7 @@ class SubmitDeckCodeCommand(
         val extraAnalysis = StringBuilder()
         deckAnalyzers.forEach { deckAnalyzer ->
             deckAnalyzer.analyze(deck)?.let {
-                extraAnalysis.append("$it ")
+                extraAnalysis.append("${it.message} ")
             }
         }
         twitchResponseBuilder.append(" $extraAnalysis")

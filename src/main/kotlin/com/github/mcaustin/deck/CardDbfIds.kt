@@ -28,4 +28,14 @@ object CardDbfIds {
     const val LINECRACKER = 50416
     const val SAYGE_SEER = 61589
     const val KINGSBANE = 47035
+    const val CTHUN_SHATTERED = 61503
+    const val PRINCE_MALCHEZAAR = 39840
+    const val NZOTH_DEATHRATTLE = 38496
+    const val NZOTH_MENAGERIE = 60443
+
+    //Unique Cost Cards
+    const val PRINCE_VALANAR = 45342
+    const val KAZAKUS_GOLEM_SHAPER = 62588
+    const val PRINCE_KELESETH = 45340
+    const val PRINCE_TALDARAM = 45341
 }

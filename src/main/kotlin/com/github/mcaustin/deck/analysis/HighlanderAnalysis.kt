@@ -10,26 +10,29 @@ import java.lang.StringBuilder
  */
 class HighlanderAnalysis(private val cardDictionary: CardDictionary) : DeckAnalyzer {
 
-    override fun analyze(deck: Deck): String {
+    override fun analyze(deck: Deck): AnalysisResult {
         val duplicateSynergyCards = findCardsWithNonDuplicateSynergy(deck)
         val splitSetDuplicates = findSplitSetDuplicate(deck)
         val normalDuplicates = deck.cards.filter { it.second > 1 }.map { it.first }
 
         val analysisBuilder = StringBuilder()
+        var warning = false
 
         if (duplicateSynergyCards.isNotEmpty()) {
             analysisBuilder.append(" [contains ${duplicateSynergyCards.size} highlander cards] ")
 
             if (splitSetDuplicates.isNotEmpty() || normalDuplicates.isNotEmpty()) {
                 analysisBuilder.append("***WARNING*** Deck has ${splitSetDuplicates.size + normalDuplicates.size} duplicate cards.")
+                warning = true
             }
         } else {
             if (splitSetDuplicates.isEmpty() && normalDuplicates.isEmpty()) {
                 analysisBuilder.append("***WARNING*** Deck has no duplicates, but no highlander synergy cards.")
+                warning = true
             }
         }
 
-        return analysisBuilder.toString()
+        return AnalysisResult(analysisBuilder.toString(), warning)
     }
 
     private fun findCardsWithNonDuplicateSynergy(deck: Deck): List<Card> {

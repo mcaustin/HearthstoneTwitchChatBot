@@ -7,5 +7,5 @@ interface DeckAnalyzer {
     /**
      * Analyze a deck and provide an optional message
      */
-    fun analyze(deck: Deck): String?
+    fun analyze(deck: Deck): AnalysisResult?
 }

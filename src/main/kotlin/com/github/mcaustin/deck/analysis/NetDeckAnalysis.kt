@@ -19,7 +19,7 @@ class NetDeckAnalysis(private val twirk: Twirk) : DeckAnalyzer {
         .version(HttpClient.Version.HTTP_1_1)
         .build()
 
-    override fun analyze(deck: Deck): String? {
+    override fun analyze(deck: Deck): AnalysisResult? {
 
         val urlEncodedString = URLEncoder.encode(deck.deckCode, "UTF-8")
 

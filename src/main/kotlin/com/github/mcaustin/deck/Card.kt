@@ -19,6 +19,7 @@ data class Card(
     val artist: String? = "UNKNOWN",
     val mechanics: List<String>? = null,
     val referencedTags: List<String>? = null,
-    val text: String? = ""
+    val text: String? = "",
+    val race: String? = null
 )
 
