@@ -90,10 +90,17 @@ class SubmitDeckCodeCommand(
         }
 
         val extraAnalysis = StringBuilder()
+        var warning = false
         deckAnalyzers.forEach { deckAnalyzer ->
             deckAnalyzer.analyze(deck)?.let {
                 extraAnalysis.append("${it.message} ")
+                if (it.warning) {
+                    warning = true
+                }
             }
+        }
+        if (warning && isPlayYourDeckReward(message)) {
+            twitchResponseBuilder.append(" keith_numbers")
         }
         twitchResponseBuilder.append(" $extraAnalysis")
 
