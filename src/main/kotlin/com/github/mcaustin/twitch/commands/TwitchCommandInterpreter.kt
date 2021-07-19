@@ -11,7 +11,8 @@ class TwitchCommandInterpreter(twirk: Twirk, deckCodeBuilder: DeckCodeBuilder) {
         SubmitDeckCodeCommand(deckCodeBuilder, twirk),
         LastDeckCommand(twirk),
         SubmissionsCommand(twirk),
-        StatsCommand(twirk)
+        StatsCommand(twirk),
+        AnalyzeCommand(twirk)
     )
 
     fun interpret(sender: TwitchUser?, message: TwitchMessage?) {

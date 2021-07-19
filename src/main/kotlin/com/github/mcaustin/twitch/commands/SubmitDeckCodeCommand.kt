@@ -109,6 +109,7 @@ class SubmitDeckCodeCommand(
         } else {
             twirk.channelMessage(twitchResponseBuilder.toString())
         }
+        logger.info(twitchResponseBuilder.toString())
     }
 
     private fun isPlayYourDeckReward(message: TwitchMessage?) = message?.tagMap?.containsKey("custom-reward-id") == true
