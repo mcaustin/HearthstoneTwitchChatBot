@@ -8,9 +8,13 @@ import com.github.mcaustin.deck.DeckCodeBuilder
 import com.github.mcaustin.twitch.commands.TwitchCommandInterpreter
 import org.apache.logging.log4j.LogManager.getLogger
 
-class TwitchMessageListener(twirk: Twirk, deckCodeBuilder: DeckCodeBuilder): TwirkListener {
+class TwitchMessageListener(
+    private val twirk: Twirk,
+    deckCodeBuilder: DeckCodeBuilder,
+    donkeyHarvester: DonkeyHarvester
+): TwirkListener {
 
-    private val commandInterpreter = TwitchCommandInterpreter(twirk, deckCodeBuilder)
+    private val commandInterpreter = TwitchCommandInterpreter(twirk, deckCodeBuilder, donkeyHarvester)
     private val logger = getLogger(TwitchMessageListener::class.java)
 
     override fun onPrivMsg(sender: TwitchUser?, message: TwitchMessage?) {
@@ -22,6 +26,14 @@ class TwitchMessageListener(twirk: Twirk, deckCodeBuilder: DeckCodeBuilder): Twi
         } catch (e: RuntimeException) {
             println("Problem handling command")
             e.printStackTrace()
+        }
+    }
+
+    override fun onReconnect() {
+        super.onReconnect()
+        logger.warn("Trying to reconnect....")
+        if (twirk.connect()) {
+            logger.info("reconnect success")
         }
     }
 }

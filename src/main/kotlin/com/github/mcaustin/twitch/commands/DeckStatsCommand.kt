@@ -7,7 +7,7 @@ import com.github.mcaustin.db.ViewerDeckRequestLocalDbDAO
 import java.lang.StringBuilder
 import java.lang.UnsupportedOperationException
 
-class StatsCommand(private val twirk: Twirk): CommandExecutor {
+class DeckStatsCommand(private val twirk: Twirk): CommandExecutor {
 
     override fun executeCommand(sender: TwitchUser?, message: TwitchMessage?) {
         if (!canHandle(sender, message)) {
@@ -19,7 +19,7 @@ class StatsCommand(private val twirk: Twirk): CommandExecutor {
         }
     }
 
-    override fun canHandle(sender: TwitchUser?, message: TwitchMessage?) = message?.content?.startsWith("!stats") ?: false
+    override fun canHandle(sender: TwitchUser?, message: TwitchMessage?) = message?.content?.equals("!deckstats") ?: false
 
     private fun handleStatsRequest() {
 

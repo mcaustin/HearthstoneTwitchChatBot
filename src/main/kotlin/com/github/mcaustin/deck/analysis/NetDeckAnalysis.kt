@@ -15,13 +15,12 @@ class NetDeckAnalysis(private val twirk: Twirk) : DeckAnalyzer {
 
     private val logger = LogManager.getLogger(NetDeckAnalysis::class.java)
 
-    private val client: HttpClient = HttpClient.newBuilder()
-        .version(HttpClient.Version.HTTP_1_1)
-        .build()
-
     override fun analyze(deck: Deck): AnalysisResult? {
 
         val urlEncodedString = URLEncoder.encode(deck.deckCode, "UTF-8")
+        val client: HttpClient = HttpClient.newBuilder()
+            .version(HttpClient.Version.HTTP_1_1)
+            .build()
 
         val request = HttpRequest.newBuilder()
             .uri(URI.create("https://hearthstone-decks.net/?s=$urlEncodedString"))
