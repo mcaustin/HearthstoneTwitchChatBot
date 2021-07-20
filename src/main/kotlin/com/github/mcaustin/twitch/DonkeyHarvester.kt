@@ -18,7 +18,12 @@ class DonkeyHarvester {
     private val logger = LogManager.getLogger(this.javaClass)
     private val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
+    private val sleepAfterTries = 30
+
     var currentStats: List<DonkeyGame>? = null
+
+    var isPolling = false
+        private set
 
     private val callBackList: MutableList<NewGameConsumer> = mutableListOf()
 
@@ -27,8 +32,10 @@ class DonkeyHarvester {
     }
 
     fun startPolling() {
+        isPolling = true
         coroutineScope.launch {
             var lastGame: DonkeyGame? = null
+            var sleepTries = 0
             while (true) {
                 pollDonkey()?.let {
                     val newGame = it.first()
@@ -39,10 +46,19 @@ class DonkeyHarvester {
                         for (consumer in iterator) {
                             consumer.newGamesFound(currentStats!!)
                         }
+                        sleepTries = 0
+                    } else {
+                        sleepTries++
                     }
                     lastGame = newGame
                 }
-                delay(Duration.ofMinutes(1).toMillis())
+                if (sleepTries < sleepAfterTries) {
+                    delay(Duration.ofMinutes(1).toMillis())
+                } else {
+                    logger.info("No game updates for $sleepTries checks, stopping polling.")
+                    isPolling = false
+                    break
+                }
             }
         }
     }

@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager.getLogger
 class TwitchMessageListener(
     private val twirk: Twirk,
     deckCodeBuilder: DeckCodeBuilder,
-    donkeyHarvester: DonkeyHarvester
+    private val donkeyHarvester: DonkeyHarvester
 ): TwirkListener {
 
     private val commandInterpreter = TwitchCommandInterpreter(twirk, deckCodeBuilder, donkeyHarvester)
@@ -19,6 +19,11 @@ class TwitchMessageListener(
 
     override fun onPrivMsg(sender: TwitchUser?, message: TwitchMessage?) {
         super.onPrivMsg(sender, message)
+
+        if (!donkeyHarvester.isPolling) {
+            logger.info("Donkey Harvester was stopped, restarting...")
+            donkeyHarvester.startPolling()
+        }
 
         logger.info("${sender?.displayName}: ${message?.content}")
         try {

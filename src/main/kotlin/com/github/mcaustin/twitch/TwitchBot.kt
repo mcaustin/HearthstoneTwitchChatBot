@@ -21,7 +21,6 @@ class TwitchBot(val channelName: String, val accountName: String, val oAuthSecre
         val deckCodeBuilder = DeckCodeBuilder()
 
         logger.info("Booting donkey harvester...")
-        donkeyHarvester.startPolling()
         donkeyHarvester.registerCallback(this)
 
         logger.info("Adding message listener")
