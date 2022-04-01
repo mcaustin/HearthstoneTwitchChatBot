@@ -1,5 +1,6 @@
 package com.github.mcaustin
 
+import com.github.mcaustin.deck.CardDataDownloader
 import com.github.mcaustin.twitch.TwitchBot
 
 fun main(args: Array<String>) {
@@ -7,6 +8,9 @@ fun main(args: Array<String>) {
         printUsageInstructions()
     } else {
         println("Program started.")
+
+        CardDataDownloader.createCardsFile()
+
         TwitchBot(
             channelName = args[0],
             accountName = args[1],

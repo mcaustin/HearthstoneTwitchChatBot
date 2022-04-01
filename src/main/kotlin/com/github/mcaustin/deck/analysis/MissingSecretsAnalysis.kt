@@ -21,6 +21,7 @@ class MissingSecretsAnalysis : DeckAnalyzer {
         //Find cards that work with secrets, but take out anti-secret tech
         val secretSynergyCards = deck.cards.map { it.first }.filter { it.referencedTags?.contains(SECRET) ?: false }
             .filter { !interactsWithEnemySecretCards.contains(it) }
+            .filter { it.name != "Arcane Keysmith" }
 
         if (secretSynergyCards.isNotEmpty()) {
             val secretCards = deck.cards.map { it.first }.filter { it.mechanics?.contains(SECRET) ?: false }

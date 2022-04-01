@@ -3,6 +3,7 @@ package com.github.mcaustin.twitch.commands
 import com.gikk.twirk.Twirk
 import com.gikk.twirk.types.twitchMessage.TwitchMessage
 import com.gikk.twirk.types.users.TwitchUser
+import com.github.mcaustin.db.DeckStatsDAO
 import com.github.mcaustin.db.ViewerDeckRequestLocalDbDAO
 import java.lang.UnsupportedOperationException
 import java.time.Instant
@@ -27,11 +28,10 @@ class LastDeckCommand(private val twirk: Twirk) : CommandExecutor {
         val viewerName = getViewerName(tokens, sender)
 
         viewerName?.let { viewer ->
-            val allRequests = ViewerDeckRequestLocalDbDAO.findRequests(viewer).toMutableList()
-            allRequests.sortBy { Instant.parse(it.submissionDate) }
+            val lastDeck = DeckStatsDAO.getViewerLastDeck(viewer)
 
-            allRequests.lastOrNull()?.let {
-                twirk.channelMessage("$viewer's last submitted deck: ${it.deckCode}")
+            lastDeck?.let {
+                twirk.channelMessage("$viewer's last submitted deck: $it")
             } ?: twirk.channelMessage("$viewer has no recorded decks ")
         }
     }

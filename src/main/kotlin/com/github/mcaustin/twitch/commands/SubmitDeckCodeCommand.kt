@@ -3,6 +3,7 @@ package com.github.mcaustin.twitch.commands
 import com.gikk.twirk.Twirk
 import com.gikk.twirk.types.twitchMessage.TwitchMessage
 import com.gikk.twirk.types.users.TwitchUser
+import com.github.mcaustin.db.DeckStatsDAO
 import com.github.mcaustin.db.ViewerDeckRequest
 import com.github.mcaustin.db.ViewerDeckRequestLocalDbDAO
 import com.github.mcaustin.deck.DeckCodeBuilder
@@ -27,7 +28,6 @@ class SubmitDeckCodeCommand(
         OddEvenAnalysis(),
         NetDeckAnalysis(twirk),
         HighlanderAnalysis(deckCodeBuilder.cardDictionary),
-        MissingSecretsAnalysis(),
         NZothAnalysis(),
         UniqueCardCostAnalysis()
     )
@@ -35,7 +35,7 @@ class SubmitDeckCodeCommand(
     override fun executeCommand(sender: TwitchUser?, message: TwitchMessage?) {
         message?.content?.let { messageContent ->
             val codeIndex = messageContent.indexOf("AAE")
-            if (codeIndex >= 0) {
+            if (codeIndex >= 0 && !messageContent.contains("http")) {
                 handleDeckRequest(messageContent, codeIndex, message, sender)
             }
         }
@@ -43,7 +43,7 @@ class SubmitDeckCodeCommand(
 
     override fun canHandle(sender: TwitchUser?, message: TwitchMessage?): Boolean {
         return message?.content?.let {
-            it.indexOf("AAE") >= 0
+            it.indexOf("AAE") >= 0 && !it.contains("http")
         } ?: false
     }
 
@@ -59,7 +59,6 @@ class SubmitDeckCodeCommand(
         val deck = try {
             deckCodeBuilder.buildDeck(deckCode)
         } catch (e: RuntimeException) {
-            e.printStackTrace()
             logger.error(e)
             twirk.channelMessage("Could not parse deck code: [ $deckCode ]")
             return
@@ -71,17 +70,18 @@ class SubmitDeckCodeCommand(
             if (sender != null) {
 
                 try {
-                    ViewerDeckRequestLocalDbDAO.addRequest(
-                        ViewerDeckRequest(
-                            deckCode = deckCode,
-                            viewerId = sender.displayName,
-                            heroClass = deck.heroClass,
-                            format = deck.format.name,
-                            tags = deck.tags.toSet().ifEmpty { null }
-                        )
+                    val deckRequest = ViewerDeckRequest(
+                        deckCode = deckCode,
+                        viewerId = sender.displayName,
+                        heroClass = deck.heroClass,
+                        format = deck.format.name,
+                        tags = deck.tags.toSet().ifEmpty { null }
                     )
 
-                    val requestCount = ViewerDeckRequestLocalDbDAO.requestCount(sender.displayName)
+                    ViewerDeckRequestLocalDbDAO.addRequest(deckRequest)
+                    DeckStatsDAO.addRequest(deckRequest)
+
+                    val requestCount = DeckStatsDAO.getViewerDeckCount(sender.displayName)
                     twitchResponseBuilder.append(" ${sender.displayName} now has $requestCount recorded decks")
                 } catch (e: RuntimeException) {
                     logger.error(e)

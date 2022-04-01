@@ -3,6 +3,7 @@ package com.github.mcaustin.twitch.commands
 import com.gikk.twirk.Twirk
 import com.gikk.twirk.types.twitchMessage.TwitchMessage
 import com.gikk.twirk.types.users.TwitchUser
+import com.github.mcaustin.db.DeckStatsDAO
 import com.github.mcaustin.db.ViewerDeckRequestLocalDbDAO
 import java.lang.UnsupportedOperationException
 
@@ -25,7 +26,7 @@ class SubmissionsCommand(private val twirk: Twirk): CommandExecutor {
         val viewerName = getViewerName(tokens, sender)
 
         viewerName?.let {
-            val requestCount = ViewerDeckRequestLocalDbDAO.requestCount(it)
+            val requestCount = DeckStatsDAO.getViewerDeckCount(it)
             var plural = ""
             if (requestCount != 1) {
                 plural = "s"

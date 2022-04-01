@@ -28,6 +28,11 @@ object ViewerDeckRequestLocalDbDAO {
         db.commit()
     }
 
+    fun getAll() = viewerDeckMap.map {
+        val deckRequest: ViewerDeckRequest =Json.decodeFromString(it)
+        deckRequest
+    }
+
     fun findRequests(viewerId: String): List<ViewerDeckRequest> {
         return viewerDeckMap.map {
             val deckRequest: ViewerDeckRequest = Json.decodeFromString(it)

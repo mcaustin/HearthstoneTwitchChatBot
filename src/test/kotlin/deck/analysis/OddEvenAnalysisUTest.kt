@@ -40,4 +40,14 @@ class OddEvenAnalysisUTest {
         Assertions.assertThat(results).isNotNull
         Assertions.assertThat(results!!.warning).isEqualTo(true)
     }
+
+    @Test
+    fun testCode() {
+        val deckCode = "AAEBAf0EBO72Ap74AqiHA9DOAw20BL36As2JA/usA4i2A4XNA5vNA8fOA83OA6TRA9bsA673A8KgBAA="
+        val deck = deckCodeBuilder.buildDeck(deckCode)
+
+        val results = oddEvenAnalysis.analyze(deck)
+
+        println(results)
+    }
 }

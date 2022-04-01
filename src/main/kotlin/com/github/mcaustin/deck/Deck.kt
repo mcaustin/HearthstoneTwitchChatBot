@@ -69,6 +69,6 @@ class Deck(
     }
 
     companion object {
-        const val MAX_TAGS = 8
+        const val MAX_TAGS = 12
     }
 }

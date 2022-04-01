@@ -3,9 +3,7 @@ package com.github.mcaustin.twitch.commands
 import com.gikk.twirk.Twirk
 import com.gikk.twirk.types.twitchMessage.TwitchMessage
 import com.gikk.twirk.types.users.TwitchUser
-import com.github.mcaustin.db.ViewerDeckRequestLocalDbDAO
-import java.lang.StringBuilder
-import java.lang.UnsupportedOperationException
+import com.github.mcaustin.db.DeckStatsDAO
 
 class DeckStatsCommand(private val twirk: Twirk): CommandExecutor {
 
@@ -34,36 +32,27 @@ class DeckStatsCommand(private val twirk: Twirk): CommandExecutor {
     }
 
     private fun topHeroClasses(message: StringBuilder): StringBuilder {
-        val sorted = ViewerDeckRequestLocalDbDAO.groupRequestsByClass().toList().sortedBy { (_, value) -> value }.asReversed()
-
-        val numPlaces = sorted.size.coerceAtMost(3)
+        val sorted = DeckStatsDAO.getTopHeroes(3).map { Pair(it.key!!, it.value!!) }
 
         message.append("Top viewer-deck classes: ")
-        return buildTopMessage(numPlaces, sorted, message)
+        return buildTopMessage(3, sorted, message)
     }
 
     private fun topViewerSubmission(message: StringBuilder): StringBuilder {
-        val sorted = ViewerDeckRequestLocalDbDAO.groupRequestsByViewer().toList().sortedBy { (_, value) -> value }.reversed()
-
-        val numPlaces = sorted.size.coerceAtMost(3)
+        val sorted = DeckStatsDAO.getTopViewers(3).map { Pair(it.key!!, it.value!!) }
 
         message.append("Top submissions by viewer: ")
-        return buildTopMessage(numPlaces, sorted, message)
+        return buildTopMessage(3, sorted, message)
     }
 
     private fun topCards(message: StringBuilder): StringBuilder {
-        val sorted = ViewerDeckRequestLocalDbDAO.cardsByOccurrence()
-            .toList()
-            .sortedBy { (_, value) -> value }
-            .reversed()
+        val sorted = DeckStatsDAO.getTopCards(3)
             .map {
-                Pair(it.first.name ?: "card-${it.first.dbfId}", it.second)
+                Pair(it.first?.name ?: "card-${it.first?.dbfId}", it.second ?: 0)
             }
 
-        val numPlaces = sorted.size.coerceAtMost(3)
-
         message.append("Top cards: ")
-        return buildTopMessage(numPlaces, sorted, message)
+        return buildTopMessage(3, sorted, message)
     }
 
     private fun buildTopMessage(

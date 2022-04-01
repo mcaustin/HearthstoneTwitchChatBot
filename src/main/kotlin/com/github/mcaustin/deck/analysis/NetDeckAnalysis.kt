@@ -35,11 +35,11 @@ class NetDeckAnalysis(private val twirk: Twirk) : DeckAnalyzer {
         response.thenApply {
             val responseBody = it.body()
 
-            val locatorString = "<article"
+            val locatorString = "<h3 class=\"elementor-post__title\""
 
             val subString = responseBody.substringAfter(locatorString, "")
             var title = subString.substringBefore("</a>", "")
-            title = title.substringAfterLast("\">", "")
+            title = title.substringAfterLast(">", "")
 
             if (title.isNotEmpty()) {
                 title = StringEscapeUtils.unescapeHtml4(title).trim()

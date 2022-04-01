@@ -1,6 +1,9 @@
 package com.github.mcaustin.deck
 
+import com.github.mcaustin.deck.CardDataDownloader.CARD_FILE_NAME
 import org.apache.logging.log4j.LogManager
+import java.io.File
+import java.io.FileInputStream
 import java.io.InputStream
 import java.util.Base64
 
@@ -15,7 +18,7 @@ class DeckCodeBuilder {
      * @return A File referencing the given path.
      */
     private fun getCardJsonData(): InputStream {
-        return javaClass.classLoader.getResourceAsStream(CARDS_JSON_FILE)!!
+        return FileInputStream(File(CARD_FILE_NAME))
     }
 
     fun buildDeck(deckString: String): Deck {
@@ -104,9 +107,5 @@ class DeckCodeBuilder {
         } while (b and 0x80 != 0)
         dst[0] = result
         return offset
-    }
-
-    companion object {
-        const val CARDS_JSON_FILE = "cards.json"
     }
 }

@@ -33,6 +33,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.10.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
 
+    testImplementation "io.mockk:mockk:1.12.0"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testImplementation 'org.assertj:assertj-core:3.6.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
@@ -43,5 +44,5 @@ test {
 }
 
 shadowJar {
-    append 'cards.json'
+    append 'cards.collectible.json'
 }
